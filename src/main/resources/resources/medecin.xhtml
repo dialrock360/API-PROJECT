@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+  <title>Medecin</title>
+  <h:outputStylesheet name="/css/login.css" />
+</h:head>
+
+<h:body>
+  <h:form id="form1" prependId="false">
+    <h2>Information Medecin</h2>
+    <p:panelGrid columns="2" styleClass="ui-fluid center ui-noborder">
+
+      <p:outputLabel value="Matricule: " styleClass="red"/>
+      <h:panelGroup>
+      <p:inputText id="matricule" value="#{medecinView.medecin.matricule}"
+                   readonly="#{medecinView.medecin.id!=0?'true':'false'}" >
+        <f:ajax event="change" listener="#{medecinView.findMedecin}"
+                render=":form1:nom :form1:prenom :form1:tel :form1:adresse
+                :form1:email :form1:prenom
+                :form1:datenais :form1:salaire
+                :form1:service :form1:specialiste"/>
+        <f:validator validatorId="MatriculeNonValide"/>
+
+      </p:inputText>
+        <h:message for="matricule"></h:message>
+      </h:panelGroup>
+
+
+      <p:outputLabel value="Nom: " styleClass="red"/>
+      <p:inputText id="nom" value="#{medecinView.medecin.nom}">
+        <f:validateLength minimum="2" maximum="10"/>
+      </p:inputText>
+
+
+      <p:outputLabel value="Prenom: " styleClass="red"/>
+      <p:inputText id="prenom" value="#{medecinView.medecin.prenom}">
+        <f:validateLength minimum="2" maximum="20"/>
+      </p:inputText>
+
+      <p:outputLabel value="Telephone: " styleClass="red"/>
+      <p:inputText id="tel" value="#{medecinView.medecin.tel}" />
+
+      <p:outputLabel value="Adresse: " styleClass="red"/>
+      <p:inputText id="adresse" value="#{medecinView.medecin.adresse}" />
+
+
+      <p:outputLabel value="Email: " styleClass="red"/>
+      <h:panelGroup>
+      <p:inputText id="email" value="#{medecinView.medecin.email}">
+        <f:validateRegex
+                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+      </p:inputText>
+        <h:message for="email"></h:message>
+    </h:panelGroup>
+
+      <p:outputLabel value="Date de Naissance: " styleClass="red"/>
+      <p:inputText id="datenais" value="#{medecinView.medecin.datenaissance}">
+        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+      </p:inputText>
+
+      <p:outputLabel value="Salaire: " styleClass="red"/>
+      <p:inputText id="salaire" value="#{medecinView.medecin.salaire}" />
+
+      <p:outputLabel value="Service: " styleClass="red"/>
+      <p:selectOneMenu required="true" id="service" value="#{medecinView.medecin.service.id}"
+                       >
+        <p:ajax listener="#{medecinView.findSpecialites}" update=":form1:specialite"/>
+        <f:selectItem itemLabel="Selectionner le Service" itemValue=""/>
+        <f:selectItems value="#{medecinView.services}" var="s" itemLabel="#{s.libelle}" itemValue="#{s.id}"
+                       />
+      </p:selectOneMenu>
+
+      <p:outputLabel value="Specialite: " styleClass="red"/>
+      <p:selectManyMenu  required="true" id="specialite" value="#{medecinView.selectedSpecialites}" filter="true"
+      filterMatchMode="contains" showCheckbox="true" >
+        <f:selectItems value="#{medecinView.specialites}" var="sp" itemLabel="#{sp.libelle}" itemValue="#{sp}"
+                       />
+      </p:selectManyMenu>
+
+
+
+      <p:outputLabel value=""/>
+      <p:commandButton action="#{medecinView.save}" value="Enregistrer" ajax="false" />
+    </p:panelGrid>
+    <h:inputHidden id="idmedecin" value="#{medecinView.medecin.id}" />
+  <h:messages></h:messages>
+  </h:form>
+</h:body>
+</html>
