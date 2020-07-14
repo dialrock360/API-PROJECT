@@ -61,10 +61,10 @@ git clone https://github.com/dialrock360/Jee-spring-security-api-store.git
  # Open projectin IDE INTELIJ
   Install all maven dependency
   Start your myql server (xampp, lampp, wampp)
-  Create database test2 in your  phpmyadmin
+  Create database storedb in your  phpmyadmin
   
   # Configure Application.yml
-   Path = "src/main/resources/application.yml"
+   Path = "src/main/resources/application.properties"
       # you can change this configuration
 	     port: 9090
 		 url: jdbc:mysql://localhost:3306/test2?....
